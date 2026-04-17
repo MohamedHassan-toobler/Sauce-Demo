@@ -42,16 +42,17 @@ pipeline {
         }
 
         stage('Publish Playwright Report') {
-            steps {
-                publishHTML([
-                    reportName: 'Playwright Report',
-                    reportDir: 'playwright-report',
-                    reportFiles: 'index.html',
-                    keepAll: true,
-                    alwaysLinkToLastBuild: true
-                ])
-            }
-        }
+    steps {
+        publishHTML(target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'playwright-report',
+            reportFiles: 'index.html',
+            reportName: 'Playwright Report'
+        ])
+    }
+}
 
         stage('Allure Report') {
             steps {
