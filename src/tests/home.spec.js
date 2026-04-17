@@ -1,7 +1,8 @@
 import { expect, test } from "../Fixtures/BaseTest";
-
+let home;
 test.describe("Cart", () => {
   test.beforeEach(async ({ loginApp, homePage }) => {
+    home = new homePage(loginApp);
     await homePage.addToCart();
   });
   test("Add a product to cart", async ({ homePage }) => {
