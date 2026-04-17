@@ -1,5 +1,5 @@
-import { test, expect } from "../Fixtures/BaseTest";
-import { Menus } from "../Pages/Menus";
+import { test, expect } from "../fixtures/BaseTest";
+import { Menus } from "../pages/Menus";
 let menu;
 test.beforeEach(async ({ loginApp }) => {
   menu = new Menus(loginApp);

@@ -1,5 +1,5 @@
-import { test, expect } from "../Fixtures/BaseTest";
-import { loginPage } from "../Pages/loginPage";
+import { test, expect } from "../fixtures/BaseTest";
+import { loginPage } from "../pages/loginPage";
 let login;
 test.beforeEach(async ({ launchApp }) => {
   login = new loginPage(launchApp);

@@ -1,6 +1,6 @@
-import { test, expect } from "../Fixtures/BaseTest";
-import { HomePage } from "../Pages/HomePage";
-import { cartPage } from "../Pages/cartPage";
+import { test, expect } from "../fixtures/BaseTest";
+import { HomePage } from "../pages/HomePage";
+import { cartPage } from "../pages/cartPage";
 let home, cart, itemName;
 test.beforeEach(async ({ loginApp }) => {
   home = new HomePage(loginApp);
