@@ -1,4 +1,4 @@
-import { expect, test } from "../Fixtures/BaseTest";
+import { expect, test } from "../fixtures/BaseTest";
 
 test.describe("Cart", () => {
   test.beforeEach(async ({ homePage }) => {

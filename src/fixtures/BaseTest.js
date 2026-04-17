@@ -1,8 +1,8 @@
 import { test as BaseTest, expect } from "@playwright/test";
-import { loginPage } from "../Pages/loginPage";
-import { HomePage } from "../Pages/HomePage";
-import { cartPage } from "../Pages/cartPage";
-import { checkoutPage } from "../Pages/checkoutPage";
+import { loginPage } from "../pages/loginPage";
+import { HomePage } from "../pages/HomePage";
+import { cartPage } from "../pages/cartPage";
+import { checkoutPage } from "../pages/checkoutPage";
 export const test = BaseTest.extend({
   loginPage: async ({ page }, use) => {
     await use(new loginPage(page));
