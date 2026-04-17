@@ -7,8 +7,8 @@ export const test = BaseTest.extend({
   loginPage: async ({ page }, use) => {
     await use(new loginPage(page));
   },
-  homePage: async ({ page }, use) => {
-    await use(new HomePage(page));
+  homePage: async ({ loginApp }, use) => {
+    await use(new HomePage(loginApp));
   },
 
   cartPage: async ({ page }, use) => {
