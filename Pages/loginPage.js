@@ -7,7 +7,7 @@ class loginPage {
     this.credError = page.locator("h3[data-test='error']");
   }
   async navigate() {
-    this.page.goto("/");
+    await this.page.goto("/");
   }
   async login(
     username = process.env.APP_USERNAME,
