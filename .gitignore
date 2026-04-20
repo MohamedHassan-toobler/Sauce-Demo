@@ -1,6 +1,6 @@
-
-# Playwright
+.DS_Store
 node_modules/
+# Playwright
 /test-results/
 /playwright-report/
 /blob-report/
@@ -10,5 +10,3 @@ node_modules/
 allure-results/
 allure-report/
 coverage/
-
-
