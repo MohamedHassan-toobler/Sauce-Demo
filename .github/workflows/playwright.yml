@@ -49,3 +49,27 @@ jobs:
           name: playwright-report
           path: playwright-report
           if-no-files-found: ignore
+      # Prepare combined site (Playwright + Allure)
+      - name: Prepare site
+        if: always()
+        run: |
+          mkdir -p site/playwright
+          mkdir -p site/allure
+          cp -r playwright-report/* site/playwright/ || true
+          cp -r allure-report/* site/allure/ || true
+
+      # Create index page to navigate both
+      - name: Create index.html
+        if: always()
+        run: |
+          echo '<h1>Test Reports</h1>' > site/index.html
+          echo '<a href="./playwright/index.html">Playwright Report</a><br>' >> site/index.html
+          echo '<a href="./allure/index.html">Allure Report</a>' >> site/index.html
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        if: always() && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
