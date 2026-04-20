@@ -60,7 +60,7 @@ export default defineConfig({
   webServer: {
     command: "npm start",
     url: process.env.BASE_URL || "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
     cwd: path.resolve(__dirname, ".."),
   },
 });
