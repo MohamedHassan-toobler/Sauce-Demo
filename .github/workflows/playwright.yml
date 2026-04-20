@@ -1,58 +1,44 @@
 name: Playwright Tests
+
 on:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+
 jobs:
   test:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       APP_USERNAME: ${{ secrets.APP_USERNAME }}
       APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
       BASE_URL: ${{ secrets.BASE_URL }}
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
       - name: Install dependencies
         run: npm ci
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
       - name: Run Playwright tests
         run: npx playwright test
+
       - name: Install Allure CLI
         run: npm install -g allure-commandline --save-dev
 
-      # Step 2: Generate Allure HTML report from results
       - name: Generate Allure Report
         run: allure generate allure-results --clean -o allure-report
 
-      # Step 3: Upload Allure Report
-      - name: Upload Allure Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: allure-report
-          if-no-files-found: ignore
-      # ---------- Playwright HTML ----------
-      - name: Upload Playwright HTML Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
-          if-no-files-found: ignore
-      # Prepare combined site (Playwright + Allure)
+      # -------- Prepare combined site --------
       - name: Prepare site
         if: always()
         run: |
@@ -60,26 +46,33 @@ jobs:
           mkdir -p site/allure
           cp -r playwright-report/* site/playwright/ || true
           cp -r allure-report/* site/allure/ || true
-
-      # Create index page to navigate both
-      - name: Create index.html
-        if: always()
-        run: |
           echo '<h1>Test Reports</h1>' > site/index.html
           echo '<a href="./playwright/index.html">Playwright Report</a><br>' >> site/index.html
           echo '<a href="./allure/index.html">Allure Report</a>' >> site/index.html
 
-      # Setup GitHub Pages
-      - name: Setup Pages
-        if: always() && github.ref == 'refs/heads/main'
-        uses: actions/configure-pages@v5
-
+      # Upload artifact for Pages
       - name: Upload Pages artifact
-        if: always() && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
+  deploy-pages:
+    if: github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Deploy to GitHub Pages
-        if: always() && github.ref == 'refs/heads/main'
         uses: actions/deploy-pages@v4
